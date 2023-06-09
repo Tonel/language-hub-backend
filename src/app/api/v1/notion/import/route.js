@@ -56,7 +56,7 @@ export async function POST(request) {
     )
 
     const notionPageId = notionPage?.id
-    const notionPageStatus = notionPage.properties["Status"]
+    const notionPageStatus = notionPage?.properties["Status"]
 
     const notionBody = {
       "Medium ID": stringToNotionText(mediumPostId),
