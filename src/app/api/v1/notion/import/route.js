@@ -51,9 +51,12 @@ export async function POST(request) {
         break
     }
 
-    const notionPageId = notionData.results.find(
+    const notionPage = notionData.results.find(
       (record) => record.properties["Medium ID"].rich_text[0]?.text?.content === mediumPostId,
-    )?.id
+    )
+
+    const notionPageId = notionPage?.id
+    const notionPageStatus = notionPage.properties["Status"]
 
     const notionBody = {
       "Medium ID": stringToNotionText(mediumPostId),
@@ -75,10 +78,12 @@ export async function POST(request) {
     // TODO: error handling with try catch not to break the loop
 
     if (notionPageId) {
-      await NotionAPI.pages.update({
-        page_id: notionPageId,
-        properties: notionBody,
-      })
+      if (notionPageStatus.status.name !== "Published") {
+        await NotionAPI.pages.update({
+          page_id: notionPageId,
+          properties: notionBody,
+        })
+      }
     } else {
       await NotionAPI.pages.create({
         parent: {
