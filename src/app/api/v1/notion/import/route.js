@@ -35,7 +35,7 @@ export async function POST(request) {
     const author = story.creator.name
 
     let type = "Draft"
-    if (story.status === "published") {
+    if (story.status === "published" || (story.status === "submissions" && story.firstPublishedAt !== 0)) {
       type = "Story"
     }
 
