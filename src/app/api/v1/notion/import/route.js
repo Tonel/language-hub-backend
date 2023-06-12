@@ -40,15 +40,11 @@ export async function POST(request) {
     }
 
     let status = "Received"
-    switch (story.virtuals.statusForCollection) {
-      case "APPROVED":
-        status = "Published"
-        break
-      case "PENDING":
-        if (scheduledFor) {
-          status = "Scheduled"
-        }
-        break
+    if (story.virtuals.statusForCollection === "APPROVED") {
+      status = "Published"
+    }
+    if (scheduledFor) {
+      status = "Scheduled"
     }
 
     const notionPage = notionData.results.find(
